@@ -330,3 +330,4 @@ Check out [this video](https://youtu.be/EoVrTNA3geM) where I will guide on how t
 ### How do I update my Strapi version?
 Check out this [this issue comment](https://github.com/strapi/nextjs-corporate-starter/issues/17#issuecomment-1558149967)
 
+# updated-bet-project
