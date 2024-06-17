@@ -9,21 +9,22 @@ export default function FormSubmit({
   placeholder: string;
   text: string;
 }) {
-  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const token = process.env.NEXT_PUBLIC_STRAPI_FORM_SUBMISSION_TOKEN;
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Regular expression for validating phone numbers
+  const phoneRegex = /^[0-9]{10}$/;
 
   async function handleSubmit() {
-    if (email === "") {
-      setErrorMessage("Email cannot be blank.");
+    if (phoneNumber === "") {
+      setErrorMessage("Phone number cannot be blank.");
       return;
     }
 
-    if (!emailRegex.test(email)) {
-      setErrorMessage("Invalid email format.");
+    if (!phoneRegex.test(phoneNumber)) {
+      setErrorMessage("Invalid phone number format.");
       return;
     }
 
@@ -33,16 +34,16 @@ export default function FormSubmit({
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ data: { email } }),
+      body: JSON.stringify({ data: { phoneNumber } }),
     });
 
     if (!res.ok) {
-      setErrorMessage("Email failed to submit.");
+      setErrorMessage("Phone number failed to submit.");
       return;
     }
     setErrorMessage("");
-    setSuccessMessage("Email successfully submitted!");
-    setEmail("");
+    setSuccessMessage("Phone number successfully submitted!");
+    setPhoneNumber("");
   }
 
   return (
@@ -56,10 +57,10 @@ export default function FormSubmit({
           ) : (
             <>
               <input
-                type="email"
+                type="tel" // Change type to 'tel' for phone number input
                 placeholder={errorMessage || placeholder}
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                value={phoneNumber}
                 className={"w-3/5 p-3 rounded-l-lg sm:w-2/3 text-gray-700"}
               />
               <button

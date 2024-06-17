@@ -22,13 +22,22 @@ export async function fetchAPI(
       `/api${path}${queryString ? `?${queryString}` : ""}`
     )}`;
 
+    console.log("Request URL:", requestUrl);
+    console.log("Merged Options:", mergedOptions);
+
     // Trigger API call
     const response = await fetch(requestUrl, mergedOptions);
+    
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    
     const data = await response.json();
     return data;
     
   } catch (error) {
-    console.error(error);
+    console.error("Fetch API error:", error);
     throw new Error(`Please check if your server is running and you set all the required tokens.`);
   }
 }
+

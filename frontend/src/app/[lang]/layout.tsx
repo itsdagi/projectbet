@@ -7,8 +7,21 @@ import { i18n } from "../../../i18n-config";
 import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import {FALLBACK_SEO} from "@/app/[lang]/utils/constants";
-
+import OddsContainer from "./components/OddsContainer";
+import OddsMenu from "./components/OddsMenu";
+import OddsTable from "./components/OddsTable";
+import Points from "./components/Points";
+import Snackbar from "./components/Snackbar";
+import Spread from "./components/Spread";
+//odds import
+import ImageSlider from "./components/ImageSlider";
+import LoadingSpinner from "./components/LoadingSpinner";
+import Moneyline from "./components/Moneyline";
+import SlidShowProps from "./components/ImageSlider";
+import { FALLBACK_SEO } from "@/app/[lang]/utils/constants";
+import Nav from "./nav";
+import { data } from "cypress/types/jquery";
+import Slideshow from "./components/ImageSlider";
 
 async function getGlobal(lang: string): Promise<any> {
   const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
@@ -36,7 +49,7 @@ async function getGlobal(lang: string): Promise<any> {
   return await fetchAPI(path, urlParamsObject, options);
 }
 
-export async function generateMetadata({ params } : { params: {lang: string}}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
   const meta = await getGlobal(params.lang);
 
   if (!meta.data) return FALLBACK_SEO;
@@ -63,7 +76,7 @@ export default async function RootLayout({
   const global = await getGlobal(params.lang);
   // TODO: CREATE A CUSTOM ERROR PAGE
   if (!global.data) return null;
-  
+
   const { notificationBanner, navbar, footer } = global.data.attributes;
 
   const navbarLogoUrl = getStrapiMedia(
@@ -73,6 +86,7 @@ export default async function RootLayout({
   const footerLogoUrl = getStrapiMedia(
     footer.footerLogo.logoImg.data?.attributes.url
   );
+  
 
   return (
     <html lang={params.lang}>
@@ -82,10 +96,14 @@ export default async function RootLayout({
           logoUrl={navbarLogoUrl}
           logoText={navbar.navbarLogo.logoText}
         />
+              
 
+              
         <main className="dark:bg-black dark:text-gray-100 min-h-screen">
           {children}
         </main>
+
+       
 
         <Banner data={notificationBanner} />
 
